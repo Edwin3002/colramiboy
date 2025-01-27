@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 
 export default function Home() {
+  
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -13,6 +14,9 @@ export default function Home() {
           height={38}
           priority
         />
+        <h1 className="text-3xl font-bold underline">
+      Hello world!
+    </h1>
         <ol>
           <li>
             Get started by editing <code>src/app/page.tsx</code>.
