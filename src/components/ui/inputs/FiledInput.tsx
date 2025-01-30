@@ -1,16 +1,15 @@
-// components/Input.tsx
-import { ErrorMessage } from "formik";
 import React from "react";
 
 type InputProps = {
-  id: string;
-  label: string;
-  name: string;
+  id?: string;
+  label?: string;
+  name?: string;
   placeholder?: string;
-  value: string;
+  value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   disabled?: boolean;
+  helperText?: string;
   type?: "text" | "email" | "password"; // Se puede extender a otros tipos de input si es necesario
   darkMode?: boolean; // Para aplicar el modo oscuro
 };
@@ -24,6 +23,7 @@ const FiledInput: React.FC<InputProps> = ({
   onChange,
   required = false,
   disabled = false,
+  helperText = "",
   type = "text",
   darkMode = false,
   ...props
@@ -52,11 +52,14 @@ const FiledInput: React.FC<InputProps> = ({
         disabled={disabled}
         {...props}
       />
-      <ErrorMessage
-        name={name}
-        component="div"
-        className="text-red-500 text-sm mt-2"
-      />
+      {Boolean(helperText) && (
+        <p
+          id="filled_error_help"
+          className="mt-2 text-xs text-red-600 dark:text-red-400"
+        >
+         {helperText}
+        </p>
+      )}
     </div>
   );
 };
