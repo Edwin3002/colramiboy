@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   Column,
+  ColumnDef,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -11,75 +12,29 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import FiledInput from "../ui/inputs/FiledInput";
+import FieldInput from "../ui/inputs/FieldInput";
+import SelectInput from "../ui/inputs/SelectInput";
+import Button from "../ui/buttons/Button";
 
-// declare module "@tanstack/react-table" {
-//   //allows us to define custom properties for our columns
-//   interface ColumnMeta<TData extends RowData, TValue> {
-//     filterVariant?: "text" | "range" | "select";
-//   }
-// }
-interface TableProps {
-  columns: [];
-  data: [];
+interface TableProps<TData> {
+  columns: ColumnDef<TData>[]; // Definimos las columnas con el tipo genérico TData
+  data: TData[]; // Hacemos que data sea un array de TData (puede ser cualquier tipo)
 }
-function DataTable({ columns = [], data = [] }: TableProps) {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  // const columns = useMemo<ColumnDef<Person, any>[]>(
-  //   () => [
-  //     {
-  //       accessorKey: "firstName",
-  //       cell: (info) => info.getValue(),
-  //     },
-  //     {
-  //       accessorFn: (row) => row.lastName,
-  //       id: "lastName",
-  //       cell: (info) => info.getValue(),
-  //       header: () => <span>Last Name</span>,
-  //     },
-  //     {
-  //       accessorFn: (row) => `${row.firstName} ${row.lastName}`,
-  //       id: "fullName",
-  //       header: "Full Name",
-  //       cell: (info) => info.getValue(),
-  //     },
-  //     {
-  //       accessorKey: "age",
-  //       header: () => "Age",
-  //       meta: {
-  //         filterVariant: "range",
-  //       },
-  //     },
-  //     {
-  //       accessorKey: "visits",
-  //       header: () => <span>Visits</span>,
-  //       meta: {
-  //         filterVariant: "range",
-  //       },
-  //     },
-  //     {
-  //       accessorKey: "status",
-  //       header: "Status",
-  //       meta: {
-  //         filterVariant: "select",
-  //       },
-  //     },
-  //     {
-  //       accessorKey: "progress",
-  //       header: "Profile Progress",
-  //       meta: {
-  //         filterVariant: "range",
-  //       },
-  //     },
-  //   ],
-  //   []
-  // );
+function DataTable<TData>({ columns, data }: TableProps<TData>) {
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data,
     columns,
-    filterFns: {},
+    filterFns: {
+      exact: (row, columnId, filterValue) => {
+        const cellValue = row.getValue(columnId);
+        console.log(cellValue);
+
+        return cellValue === filterValue;
+      },
+    },
     state: {
       columnFilters,
     },
@@ -95,13 +50,27 @@ function DataTable({ columns = [], data = [] }: TableProps) {
 
   return (
     <div className="p-2">
+      <div className="flex justify-end my-1">
+        <Button
+          onClick={() => setColumnFilters([])}
+          variant="contained"
+          color="red"
+          className={columnFilters.length === 0 ? "invisible" : "block"}
+        >
+          Quitar filtros
+        </Button>
+      </div>
       <table className="w-full">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <th key={header.id} colSpan={header.colSpan}>
+                  <th
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    className={`w-1/${headerGroup.headers.length}`}
+                  >
                     {header.isPlaceholder ? null : (
                       <>
                         <div
@@ -123,7 +92,10 @@ function DataTable({ columns = [], data = [] }: TableProps) {
                         </div>
                         {header.column.getCanFilter() ? (
                           <div className="m-4">
-                            <Filter column={header.column} />
+                            <Filter
+                              column={header.column}
+                              optionsSelect={table.options.data}
+                            />
                           </div>
                         ) : null}
                       </>
@@ -220,39 +192,48 @@ function DataTable({ columns = [], data = [] }: TableProps) {
         </select>
       </div>
       <div>{table.getPrePaginationRowModel().rows.length} Rows</div>
-      {/* <div>
-        <button onClick={() => rerender()}>Force Rerender</button>
-      </div>
-      <div>
-        <button onClick={() => refreshData()}>Refresh Data</button>
-      </div> */}
-      <pre>
-        {JSON.stringify(
-          { columnFilters: table.getState().columnFilters },
-          null,
-          2
-        )}
-      </pre>
     </div>
   );
 }
+interface ColumnMeta {
+  filterVariant?: "select" | "range" | "none" | "";
+}
 
-function Filter({ column }: { column: Column<any, unknown> }) {
+function Filter<TData>({
+  column,
+  optionsSelect = [],
+}: {
+  column: Column<unknown, unknown>;
+  optionsSelect: TData[];
+}) {
   const columnFilterValue = column.getFilterValue();
-  const { filterVariant } = column.columnDef.meta ?? {};
+  const { filterVariant = "" }: ColumnMeta = column?.columnDef?.meta ?? {};
 
-  return filterVariant === "range" ? (
+  const options = useMemo(() => {
+    const options = new Set();
+    if (filterVariant === "select")
+      optionsSelect.forEach((row) => options.add(row?.[column.id]));
+
+    return [...options.values()];
+  }, [column.id, optionsSelect, filterVariant]);
+
+  return filterVariant === "none" ? (
+    <DebouncedInput
+      value=""
+      onChange={() => {}}
+      disabled
+      visibility="invisible"
+    />
+  ) : filterVariant === "range" ? (
     <div>
       <div className="flex space-x-2 justify-around">
-        {/* See faceted column filters example for min max values functionality */}
         <DebouncedInput
           type="number"
           value={(columnFilterValue as [number, number])?.[0] ?? ""}
           onChange={(value) =>
             column.setFilterValue((old: [number, number]) => [value, old?.[1]])
           }
-          placeholder={`Min`}
-          className="w-24 border shadow rounded"
+          placeholder="Min"
         />
         <DebouncedInput
           type="number"
@@ -260,45 +241,39 @@ function Filter({ column }: { column: Column<any, unknown> }) {
           onChange={(value) =>
             column.setFilterValue((old: [number, number]) => [old?.[0], value])
           }
-          placeholder={`Max`}
-          className="w-24 border shadow rounded"
+          placeholder="Max"
         />
       </div>
     </div>
   ) : filterVariant === "select" ? (
-    <select
+    <SelectInput
+      options={options as []}
+      placeholder="Todos"
       onChange={(e) => column.setFilterValue(e.target.value)}
-      value={columnFilterValue?.toString()}
-    >
-      {/* See faceted column filters example for dynamic select options */}
-      <option value="">All</option>
-      <option value="complicated">complicated</option>
-      <option value="relationship">relationship</option>
-      <option value="single">single</option>
-    </select>
+      value={columnFilterValue?.toString() || ""}
+    />
   ) : (
     <DebouncedInput
-      className="w-36 border shadow rounded"
       onChange={(value) => column.setFilterValue(value)}
-      placeholder={`Search...`}
-      type="text"
       value={(columnFilterValue ?? "") as string}
     />
-    // See faceted column filters example for datalist search suggestions
   );
 }
 
-// A typical debounced input react component
 function DebouncedInput({
   value: initialValue,
   onChange,
   debounce = 500,
   ...props
 }: {
+  type?: "text" | "email" | "password" | "number";
   value: string | number;
   onChange: (value: string | number) => void;
   debounce?: number;
-} & Omit<InputHTMLAttributes<HTMLInputElement>, "onChange">) {
+  placeholder?: string;
+  disabled?: boolean;
+  visibility?: "block" | "invisible";
+}) {
   const [value, setValue] = useState(initialValue);
 
   useEffect(() => {
@@ -311,11 +286,13 @@ function DebouncedInput({
     }, debounce);
 
     return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (
-    <FiledInput
+    <FieldInput
       {...props}
+      placeholder="Buscar por"
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />
