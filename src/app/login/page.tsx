@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/ui/buttons/Button";
-import FiledInput from "@/components/ui/inputs/FiledInput";
+import FiledInput from "@/components/ui/inputs/FieldInput";
 import useAuthHook from "@/modules/auth/hooks/useAuthHook";
 import { Formik, Form } from "formik";
 import { z } from "zod";
@@ -16,7 +16,7 @@ const Login = () => {
   const { login, isLoading } = useAuthHook();
   return (
     <div className="flex justify-center items-center min-h-screen ">
-      <div className="w-lg max-w-md bg-[#ead1ac] dark:bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col justify-center">
+      <div className="w-sm lg:w-lg bg-[#ead1ac] dark:bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col justify-center">
         <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">
           Iniciar sesión
         </h2>

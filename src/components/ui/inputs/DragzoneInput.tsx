@@ -98,7 +98,7 @@ const DragzoneInput: React.FC<DropzoneProps> = ({
           )}
           <button
             onClick={removeFile}
-            className="absolute top-[-10] right-[-10] bg-white p-1 rounded-full shadow-md hover:bg-gray-200"
+            className="absolute top-[-10] right-12 lg:right-[-20] bg-white p-1 rounded-full shadow-md hover:bg-gray-200"
           >
             <Image
               src="icons/trash.svg"
@@ -112,7 +112,7 @@ const DragzoneInput: React.FC<DropzoneProps> = ({
       ) : (
         <label
           htmlFor="dropzone-file"
-          className={`flex flex-col items-center justify-center w-110 h-110 border-2 ${
+          className={`flex flex-col items-center justify-center w-80 h-80 lg:w-110 lg:h-110 border-2 ${
             error ? "border-red-300" : "border-gray-300"
           } border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600`}
         >
