@@ -1,5 +1,6 @@
 // components/Button.tsx
 import React from "react";
+import clsx from "clsx";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "contained" | "outlined";
@@ -7,14 +8,16 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "sm" | "md" | "lg"; // Tamaños del botón (pequeño, mediano, grande)
   children: React.ReactNode;
   disabled?: boolean;
+  className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
   variant = "contained",
   color = "blue",
   size = "sm",
-  children,
   disabled = false,
+  className = "",
+  children,
   ...props
 }) => {
   // Clases comunes
@@ -50,13 +53,20 @@ const Button: React.FC<ButtonProps> = ({
     lg: "text-lg px-6 py-3",
   };
 
-  // Definir las clases finales
-  const buttonClasses = `${baseClasses} ${colorClasses[color][variant]} ${
-    sizeClasses[size]
-  } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`;
+  // Definir las clases finales utilizando clsx para combinar las clases
+  const buttonClasses = clsx(
+    className,
+    baseClasses,
+    colorClasses[color][variant],
+    sizeClasses[size],
+    {
+      "opacity-50 cursor-not-allowed": disabled,
+      "cursor-pointer": !disabled,
+    }
+  );
 
   return (
-    <button className={buttonClasses} {...props}>
+    <button className={buttonClasses} disabled={disabled} {...props}>
       {children}
     </button>
   );
