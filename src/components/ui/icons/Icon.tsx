@@ -29,7 +29,7 @@ const Icon: React.FC<IconProps> = ({
   return (
     <svg
       className={cn(iconSize, iconClass)} 
-      fill={theme === "light" ? color : darkColor}
+      fill={theme && theme === "light" ? color : darkColor}
       viewBox="0 -960 960 960"
     >
       {children}
