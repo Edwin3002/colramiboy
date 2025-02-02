@@ -83,14 +83,13 @@ export function FieldInput({
   className,
   visibility = "block",
   type = "text",
-  darkMode = false,
   ...props
 }: InputProps) {
   return (
     <div
-      className={`grid w-full max-w-sm items-center gap-1.5 ${
-        darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-      } ${visibility === "invisible" ? "invisible" : "block"}`}
+      className={`grid w-full max-w-sm items-center ${
+        visibility === "invisible" ? "invisible" : "block"
+      }`}
     >
       <Label htmlFor={id}>{label}</Label>
       <Input

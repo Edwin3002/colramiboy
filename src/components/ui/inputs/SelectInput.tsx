@@ -1,3 +1,5 @@
+"use client"
+
 import { Label } from "@radix-ui/react-label";
 import {
   Select,
@@ -8,6 +10,7 @@ import {
   SelectValue,
 } from "@radix-ui/react-select";
 import React from "react";
+import KeyboardArrowDownIcon from "../icons/KeyboardArrowDownIcon";
 
 type SelectProps = {
   id?: string;
@@ -98,7 +101,7 @@ export function SelectInput({
   onChange,
   placeholder = "Select a timezone",
   helperText = "",
-  className,
+  className = "",
   darkMode = false,
   disabled = false,
   visibility = "block",
@@ -110,16 +113,16 @@ export function SelectInput({
     <div
       className={`w-full max-w-sm bg-orange-300${
         darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-      } ${visibility === "invisible" ? "invisible" : "block"} ${className} mb-6 mt-8 bg-orange-300`}
+      } ${visibility === "invisible" ? "invisible" : "block"} ${className}`}
     >
       <Select value={value} onValueChange={onChange} disabled={disabled}>
-        <SelectTrigger>
+        <SelectTrigger className="min-w-[200px]">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             {options.map((item, i) => (
-              <SelectItem
+              <option
                 key={
                   item
                     ? i + item
@@ -128,7 +131,7 @@ export function SelectInput({
                 value={item || item?.[optionValue]}
               >
                 {item || item?.[optionLabel]}
-              </SelectItem>
+              </option>
             ))}
           </SelectGroup>
         </SelectContent>
