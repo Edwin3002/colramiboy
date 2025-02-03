@@ -2,7 +2,6 @@
 
 import Button from "@/components/ui/buttons/Button";
 import FiledInput from "@/components/ui/inputs/FieldInput";
-// import { decrement, increment } from "@/providers/redux/slices/counterSlices";
 import { Formik, Form } from "formik";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
