@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/providers/redux/ReduxProvider";
-import { ThemeProvider } from "@/providers/themes/ThemeProvider";
-import Header from "@/components/navbars/Navbar";
+import ThemeProvider from "@/providers/themes/ThemeProvider";
+import Header from "@/components/layouts/Header";
 import { routes } from "@/constants/routes";
 
 const geistSans = Geist({
@@ -27,11 +27,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* <Layout> */}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -39,10 +38,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ReduxProvider>
-            <Header routes={Object.values(routes)}>{children}</Header>
+            <Header routes={Object.values(routes)} />
+            {children}
           </ReduxProvider>
         </ThemeProvider>
-        {/* </Layout> */}
       </body>
     </html>
   );
