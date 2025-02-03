@@ -181,20 +181,22 @@ export function DataTable<TData>({ columns, data }: TableProps<TData>) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-between space-x-2 py-4">
+      <div className="flex items-center justify-between flex-wrap space-x-2 py-4">
         <div className=" text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} de{" "}
           {table.getFilteredRowModel().rows.length} filas(s) seleccionadas.
         </div>
         <div className="flex items-center gap-1">
           <div>Página</div>
-          <strong>
-            {table.getState().pagination.pageIndex + 1} de{" "}
-            {table.getPageCount()}
+          <strong className="flex">
+            {table.getState().pagination.pageIndex +
+              1 +
+              " de " +
+              table.getPageCount()}
           </strong>
         </div>
 
-        <div className="space-x-2">
+        <div className="space-x-2 flex justify-between  w-full sm:w-auto">
           <Button
             variant="outline"
             size="sm"

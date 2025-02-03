@@ -24,7 +24,7 @@ export default function Login() {
   });
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center mt-40 md:mt-0 md:h-screen">
       <Card className="w-full max-w-md bg-[#ead1ac] dark:bg-gray-800">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">
