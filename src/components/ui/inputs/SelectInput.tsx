@@ -5,12 +5,10 @@ import {
   Select,
   SelectContent,
   SelectGroup,
-  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@radix-ui/react-select";
 import React from "react";
-import KeyboardArrowDownIcon from "../icons/KeyboardArrowDownIcon";
 
 type SelectProps = {
   id?: string;
