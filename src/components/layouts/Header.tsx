@@ -9,25 +9,27 @@ import {
 import Link from "next/link";
 import { Button } from "../ui/shadcn/button";
 import { ThemeToggle } from "../themes/ThemeToggle";
-import { MenuIcon } from "lucide-react";
+import { MenuIcon, MountainIcon } from "lucide-react";
+import { useState } from "react";
 
 export default function Header({
   routes = [],
 }: {
   routes: { route: string; name: string }[];
 }) {
+  const [openSheet, setOpenSheet] = useState(false);
   return (
     <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6 mb-[-20]">
-      <Sheet>
+      <Sheet open={openSheet} onOpenChange={setOpenSheet}>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="lg:hidden">
-          <MenuIcon/>
+            <MenuIcon />
           </Button>
         </SheetTrigger>
         <SheetContent side="left">
           <SheetTitle>
             <Link href="#" className="mr-6 hidden lg:flex" prefetch={false}>
-              {/* <MountainIcon className="h-6 w-6" /> */}
+              <MountainIcon className="h-6 w-6" />
               <span className="sr-only">Logo colramiboy</span>
             </Link>
           </SheetTitle>
@@ -39,6 +41,7 @@ export default function Header({
                   href={"/" + route}
                   className="flex w-full items-center py-2 text-lg font-semibold"
                   prefetch={false}
+                  onClick={() => setOpenSheet(false)}
                 >
                   {name}
                 </Link>
