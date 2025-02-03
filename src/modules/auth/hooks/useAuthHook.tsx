@@ -1,5 +1,4 @@
 import { usePostLoginMutation } from "@/api/services/loginApi";
-import useAlert from "@/components/alerts/useAlert";
 import { routersNames } from "@/constants/routes";
 import { useRouter } from "next/navigation";
 
@@ -8,14 +7,15 @@ import { useRouter } from "next/navigation";
 
 const useAuthHook = () => {
   const [postLogin, { isLoading }] = usePostLoginMutation();
-  const { setNewAlert } = useAlert();
   const router = useRouter();
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
       const { token } = await postLogin({ identity: email, password }).unwrap();
+      console.log(token);
+      
       // setNewAlert({ text: email, title: "Bienvendio", icon: "success" });
-      router.push(routersNames.DASHBOARD);
+      router.push(routersNames.HOME);
     } catch (error) {
       // setNewAlert({
       //   text: email,
