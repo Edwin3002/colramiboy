@@ -1,72 +1,78 @@
 "use client";
 
-import Button from "@/components/ui/buttons/Button";
-import FiledInput from "@/components/ui/inputs/FieldInput";
-import useAuthHook from "@/modules/auth/hooks/useAuthHook";
-import { Formik, Form } from "formik";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/shadcn/card";
+import FieldInput from "../../components/ui/inputs/FieldInput";
 import { z } from "zod";
+import useAuthHook from "@/modules/auth/hooks/useAuthHook";
+import { Form, Formik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import Button from "@/components/ui/buttons/Button";
 
-const validationSchema = z.object({
-  username: z.string().min(1, "El nombre de usuario es obligatorio"),
-  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
-});
-
-const Login = () => {
+export default function Login() {
   const { login, isLoading } = useAuthHook();
+
+  const validationSchema = z.object({
+    username: z.string().min(1, "El nombre de usuario es obligatorio"),
+    password: z
+      .string()
+      .min(6, "La contraseña debe tener al menos 6 caracteres"),
+  });
+
   return (
-    <div className="flex justify-center items-center min-h-screen ">
-      <div className="w-sm lg:w-lg bg-[#ead1ac] dark:bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col justify-center">
-        <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">
-          Iniciar sesión
-        </h2>
-        <Formik
-          initialValues={{ username: "", password: "" }}
-          validationSchema={toFormikValidationSchema(validationSchema)}
-          onSubmit={(values) => login(values.username, values.password)}
-        >
-          {({ values, handleChange, errors }) => (
-            <Form>
-              <div className="mb-8">
-                <FiledInput
-                  name="username"
-                  id="username"
-                  label="Usuario"
-                  placeholder="Ingresa tu nombre de usuario*"
-                  value={values.username}
-                  helperText={errors.username}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-8">
-                <FiledInput
-                  name="password"
-                  id="password"
-                  label="Contraseña"
-                  placeholder="Ingresa tu contraseña*"
-                  value={values.password}
-                  onChange={handleChange}
-                  helperText={errors.password}
-                  type="password"
-                />
-              </div>
-              <div className="flex justify-center">
-                <Button
-                  disabled={isLoading}
-                  variant="contained"
-                  color="blue"
-                  size="md"
-                  type="submit"
-                >
-                  Continuar
+    <div className="flex items-center justify-center h-screen">
+      <Card className="w-full max-w-md bg-[#ead1ac] dark:bg-gray-800">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-center">
+            Login
+          </CardTitle>
+          {/* <CardDescription className="text-center">
+            Enter your credentials to access your account
+          </CardDescription> */}
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Formik
+            initialValues={{ username: "", password: "" }}
+            validationSchema={toFormikValidationSchema(validationSchema)}
+            onSubmit={(values) => login(values.username, values.password)}
+          >
+            {({ values, handleChange, errors }) => (
+              <Form>
+                <div className="space-y-2 mb-8">
+                  <FieldInput
+                    name="username"
+                    id="username"
+                    label="Usuario"
+                    placeholder="Ingresa tu nombre de usuario*"
+                    value={values.username}
+                    helperText={errors.username}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="space-y-2 mb-8">
+                  <FieldInput
+                    name="password"
+                    id="password"
+                    label="Contraseña"
+                    placeholder="Ingresa tu contraseña*"
+                    value={values.password}
+                    onChange={handleChange}
+                    helperText={errors.password}
+                    type="password"
+                  />
+                </div>
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  Login
                 </Button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+              </Form>
+            )}
+          </Formik>
+        </CardContent>
+      </Card>
     </div>
   );
-};
-
-export default Login;
+}
