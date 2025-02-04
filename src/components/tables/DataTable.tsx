@@ -111,40 +111,44 @@ export function DataTable<TData>({ columns, data }: TableProps<TData>) {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header, i) => {
                   return (
-                    <TableHead key={header.id}>
-                      <div className="my-2">
-                        <div className="flex">
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                          {i === 0 && (
-                            <div
-                              className={
-                                header.column.getCanSort()
-                                  ? "cursor-pointer select-none ml-4"
-                                  : "ml-4"
-                              }
-                              onClick={() =>
-                                header.column.toggleSorting(
-                                  header.column.getIsSorted() === "asc"
-                                )
-                              }
-                            >
-                              <ArrowUpDown />
-                            </div>
-                          )}
-                        </div>
-
-                        {header.column.getCanFilter() ? (
-                          <Filter
-                            column={header.column}
-                            optionsSelect={table.options.data as []}
-                          />
-                        ) : null}
+                    <TableHead
+                      key={header.id}
+                      className={`my-2 `}
+                      style={{
+                        width: header.getSize(),
+                      }}
+                    >
+                      <div className="flex">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                        {i === 0 && (
+                          <div
+                            className={
+                              header.column.getCanSort()
+                                ? "cursor-pointer select-none ml-4"
+                                : "ml-4"
+                            }
+                            onClick={() =>
+                              header.column.toggleSorting(
+                                header.column.getIsSorted() === "asc"
+                              )
+                            }
+                          >
+                            <ArrowUpDown />
+                          </div>
+                        )}
                       </div>
+
+                      {header.column.getCanFilter() ? (
+                        <Filter
+                          column={header.column}
+                          optionsSelect={table.options.data as []}
+                        />
+                      ) : null}
                     </TableHead>
                   );
                 })}
