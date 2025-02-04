@@ -12,10 +12,10 @@ export const columnsUsers: ColumnDef<Payment>[] = [
       accessorKey: "id",
       header: ({ table }) => (
           <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
+            // checked={
+            //   table.getIsAllPageRowsSelected() ||
+            //   (table.getIsSomePageRowsSelected() && "") 
+            // }
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
             aria-label="Select all"
           />
