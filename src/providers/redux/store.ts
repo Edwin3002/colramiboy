@@ -48,7 +48,7 @@ const appReducer = combineReducers(
 // };
 
 // const persistedReducer = persistReducer(persistConfig, rootReducer);
-const persistedReducer = persistReducer(persistConfig, authReducer);
+const persistedReducer = persistReducer(persistConfig, appReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
