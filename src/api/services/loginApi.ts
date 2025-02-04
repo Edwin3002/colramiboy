@@ -2,12 +2,12 @@ import { createApi, FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import baseQuery from "../microserviceApi";
 import { collectionsNames, contextApi, httpMethods } from "../constants";
 
-interface LoginCredentials {
+export interface LoginCredentials {
   identity: string;
   password: string;
 }
 
-interface UserRecord {
+export interface UserRecord {
   avatar: string;
   collectionId: string;
   collectionName: string;
@@ -21,7 +21,7 @@ interface UserRecord {
   verified: boolean;
 }
 
-interface AuthResponse {
+export interface AuthResponse {
   record: UserRecord;
   token: string;
 }

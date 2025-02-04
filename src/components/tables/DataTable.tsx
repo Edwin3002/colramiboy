@@ -196,7 +196,7 @@ export function DataTable<TData>({ columns, data }: TableProps<TData>) {
           </strong>
         </div>
 
-        <div className="space-x-2 flex justify-between  w-full sm:w-auto">
+        <div className="space-x-2 flex justify-between w-full sm:w-auto mt-2 sm:mt-0">
           <Button
             variant="outline"
             size="sm"
