@@ -48,15 +48,16 @@ const appReducer = combineReducers(
 // };
 
 // const persistedReducer = persistReducer(persistConfig, rootReducer);
-const persistedReducer = persistReducer(persistConfig, appReducer);
+const persistedReducer = persistReducer(persistConfig, authReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(
-      loginApi.middleware
-    ), 
-    // Añades el middleware del api
+    getDefaultMiddleware({ serializableCheck: false })
+    // getDefaultMiddleware({ serializableCheck: false }).concat(
+    //   loginApi.middleware
+    // ),
+  // Añades el middleware del api
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
