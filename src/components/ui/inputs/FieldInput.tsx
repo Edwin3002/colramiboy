@@ -16,8 +16,8 @@ type InputProps = {
   className?: string;
   visibility?: "block" | "invisible";
   type?: "text" | "email" | "password" | "number"; // Se puede extender a otros tipos de input si es necesario
-  darkMode?: boolean; // Para aplicar el modo oscuro
-};
+  darkMode?: boolean;
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 export function FieldInput({
   id = "email",
@@ -30,18 +30,14 @@ export function FieldInput({
   disabled = false,
   helperText,
   className,
-  visibility = "block",
   type = "text",
   ...props
 }: InputProps) {
   return (
-    <div
-      className={`grid w-full max-w-sm items-center ${
-        visibility === "invisible" ? "invisible" : "block"
-      }`}
-    >
+    <div className={cn(className, "w-full")}>
       <Label htmlFor={id}>{label}</Label>
       <Input
+        className="bg-white dark:bg-gray-700"
         id={id}
         type={type}
         name={name}
@@ -50,11 +46,10 @@ export function FieldInput({
         placeholder={placeholder}
         required={required}
         disabled={disabled}
-        className={cn(className, "mt-2")}
         {...props}
       />
       {helperText && (
-        <Label className="mt-2 text-xs text-red-600 dark:text-red-400">
+        <Label className="text-xs text-red-600 dark:text-red-400">
           {helperText}
         </Label>
       )}
