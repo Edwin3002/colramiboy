@@ -21,41 +21,48 @@ export default function Register() {
   const validationSchema = z.object({
     firstName: z
       .string({ message: "El campo es obligatorio" })
-      .min(3, "El campo debe tener mas 3 caracteres")
+      .min(3, "El campo debe tener 3 o mas caracteres")
       .max(50, "El campo debe tener 50 o menos caracteres"),
     lastName: z
       .string({ message: "El campo es obligatorio" })
-      .min(3, "El campo debe tener mas 3 caracteres")
+      .min(3, "El campo debe tener 3 o mas caracteres")
       .max(50, "El campo debe tener 50 o menos caracteres"),
-    adress: z
+    address: z
       .string({ message: "El campo es obligatorio" })
-      .min(3, "El campo debe tener mas 3 caracteres")
+      .min(3, "El campo debe tener 3 o mas caracteres")
       .max(50, "El campo debe tener 50 o menos caracteres"),
     typeDocument: z.string({ message: "El campo es obligatorio" }),
     document: z
       .string({ message: "El campo es obligatorio" })
-      .min(5, "El campo debe tener mas 5 caracteres")
-      .max(15, "El campo debe tener menos 15 caracteres"),
+      .min(5, "El campo debe tener 5 o mas caracteres")
+      .max(15, "El campo debe tener 15 o menos caracteres"),
+    email: z
+      .string({ message: "El campo es obligatorio" })
+      .min(5, "El campo debe tener 5 o mas caracteres")
+      .max(50, "El campo debe tener 50 o menos caracteres")
+      .refine((val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), {
+        message: "El campo no es válido",
+      }),
     city: z
       .string({ message: "El campo es obligatorio" })
-      .min(3, "El campo debe tener mas 3 caracteres")
+      .min(3, "El campo debe tener 3 o mas caracteres")
       .max(50, "El campo debe tener 50 o menos caracteres"),
     phone: z
       .number({ message: "El campo es obligatorio" })
-      .min(10000000, "El campo debe tener mas 8 caracteres")
-      .max(9999999999, "El campo debe tener menos 10 caracteres"),
+      .min(10000000, "El campo debe tener 8 o mas caracteres")
+      .max(9999999999, "El campo debe tener 10 o menos caracteres"),
     telegram: z
       .number()
-      .min(10000000, "El campo debe tener mas 8 caracteres")
-      .max(9999999999, "El campo debe tener menos 10 caracteres")
+      .min(10000000, "El campo debe tener 8 o mas caracteres")
+      .max(9999999999, "El campo debe tener 10 o menos caracteres")
       .optional(),
     job: z
       .string({ message: "El campo es obligatorio" })
-      .min(3, "El campo debe tener mas 3 caracteres")
+      .min(3, "El campo debe tener 3 o mas caracteres")
       .max(50, "El campo debe tener 50 o menos caracteres"),
     reference: z
       .string({ message: "El campo es obligatorio" })
-      .min(3, "El campo debe tener mas 3 caracteres")
+      .min(3, "El campo debe tener 3 o mas caracteres")
       .max(50, "El campo debe tener 50 o menos caracteres"),
   });
 
@@ -72,17 +79,19 @@ export default function Register() {
             initialValues={{
               firstName: "",
               lastName: "",
-              adress: "",
+              address: "",
               typeDocument: "",
-              document: "",
+              document: undefined,
+              email: "",
               city: "",
-              phone: "",
-              telegram: "",
+              phone: undefined,
+              telegram: undefined,
               job: "",
               reference: "",
             }}
+            enableReinitialize
             validationSchema={toFormikValidationSchema(validationSchema)}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={register}
           >
             {({ values, handleChange, errors }) => (
               <Form className="lg:grid lg:grid-cols-2 gap-4">
@@ -129,16 +138,24 @@ export default function Register() {
                   value={values.document}
                   helperText={errors.document}
                   onChange={handleChange}
-                  minLength={5}
-                  maxLength={15}
                 />
                 <FieldInput
-                  name="adress"
-                  id="adress"
+                  type="email"
+                  name="email"
+                  id="email"
+                  label="Correo*"
+                  placeholder="Ingresa tu correo"
+                  value={values.email}
+                  helperText={errors.email}
+                  onChange={handleChange}
+                />
+                <FieldInput
+                  name="address"
+                  id="address"
                   label="Dirección*"
                   placeholder="Ingresa tu dirección"
-                  value={values.adress}
-                  helperText={errors.adress}
+                  value={values.address}
+                  helperText={errors.address}
                   onChange={handleChange}
                 />
                 <FieldInput
