@@ -113,7 +113,7 @@ export function DataTable<TData>({ columns, data }: TableProps<TData>) {
                   return (
                     <TableHead
                       key={header.id}
-                      className={`my-2 `}
+                      className="my-2"
                       style={{
                         width: header.getSize(),
                       }}

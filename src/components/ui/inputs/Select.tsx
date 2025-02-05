@@ -1,4 +1,7 @@
-"use client"
+"use client";
+
+import { ReactNode } from "react";
+import { Label } from "../shadcn/label";
 
 type SelectProps = {
   id?: string;
@@ -15,7 +18,8 @@ type SelectProps = {
   darkMode?: boolean; // Para aplicar el modo oscuro
   optionLabel?: string;
   optionValue?: string;
-  options: [];
+  children?: ReactNode;
+  options?: [] & React.SelectHTMLAttributes<HTMLSelectElement>;
 };
 const Select: React.FC<SelectProps> = ({
   id,
@@ -33,18 +37,12 @@ const Select: React.FC<SelectProps> = ({
   optionValue = "",
   className = "",
   placeholder = "Selecciona una opción",
+  children = null,
   ...props
 }) => {
   return (
     <div>
-      <label
-        htmlFor={id}
-        className={`block mb-2 text-sm font-medium${
-          darkMode ? "text-white" : "text-gray-900"
-        }`}
-      >
-        {label}
-      </label>
+      <Label htmlFor={id}>{label}</Label>
       <select
         id={id}
         name={name}
@@ -57,27 +55,26 @@ const Select: React.FC<SelectProps> = ({
         disabled={disabled}
         {...props}
       >
-        <option value="">
-          {placeholder}
-        </option>
-        {options.map((item, i) => (
-          <option
-            key={
-              item ? i + item : i + item?.[optionLabel] + item?.[optionValue]
-            }
-            value={item || item?.[optionValue]}
-          >
-            {item || item?.[optionLabel]}
-          </option>
-        ))}
+        <option value="">{placeholder}</option>
+        {children
+          ? children
+          : options?.map((item, i) => (
+              <option
+                key={
+                  item
+                    ? i + item
+                    : i + item?.[optionLabel] + item?.[optionValue]
+                }
+                value={item || item?.[optionValue]}
+              >
+                {item || item?.[optionLabel]}
+              </option>
+            ))}
       </select>
-      {Boolean(helperText) && (
-        <p
-          id="filled_error_help"
-          className="mt-2 text-xs text-red-600 dark:text-red-400"
-        >
+      {helperText && (
+        <Label className="text-xs text-red-600 dark:text-red-400">
           {helperText}
-        </p>
+        </Label>
       )}
     </div>
   );

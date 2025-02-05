@@ -42,29 +42,27 @@ export default function Login() {
           >
             {({ values, handleChange, errors }) => (
               <Form>
-                <div className="space-y-2 mb-8">
-                  <FieldInput
-                    name="username"
-                    id="username"
-                    label="Usuario"
-                    placeholder="Ingresa tu nombre de usuario*"
-                    value={values.username}
-                    helperText={errors.username}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="space-y-2 mb-8">
-                  <FieldInput
-                    name="password"
-                    id="password"
-                    label="Contraseña"
-                    placeholder="Ingresa tu contraseña*"
-                    value={values.password}
-                    onChange={handleChange}
-                    helperText={errors.password}
-                    type="password"
-                  />
-                </div>
+                <FieldInput
+                  className="mb-8"
+                  name="username"
+                  id="username"
+                  label="Usuario"
+                  placeholder="Ingresa tu nombre de usuario*"
+                  value={values.username}
+                  helperText={errors.username}
+                  onChange={handleChange}
+                />
+                <FieldInput
+                  className="mb-8"
+                  name="password"
+                  id="password"
+                  label="Contraseña"
+                  placeholder="Ingresa tu contraseña*"
+                  value={values.password}
+                  onChange={handleChange}
+                  helperText={errors.password}
+                  type="password"
+                />
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   Login
                 </Button>

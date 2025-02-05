@@ -14,5 +14,6 @@ export enum httpMethods {
 
 export enum collectionsNames {
   USERS = "users",
+  REGISTER_USERS = "registerUsers",
 }
 

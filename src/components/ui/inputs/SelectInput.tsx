@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Label } from "@radix-ui/react-label";
 import {
@@ -21,12 +21,11 @@ type SelectProps = {
   disabled?: boolean;
   helperText?: string;
   className?: string;
-  visibility?: "block" | "invisible";
   darkMode?: boolean; // Para aplicar el modo oscuro
   optionLabel?: string;
   optionValue?: string;
   options: [];
-};
+} & React.SelectHTMLAttributes<HTMLSelectElement>;
 
 // const SelectInput: React.FC<SelectProps> = ({
 //   id,
@@ -102,16 +101,15 @@ export function SelectInput({
   className = "",
   darkMode = false,
   disabled = false,
-  visibility = "block",
   options = [],
   optionLabel = "",
   optionValue = "",
 }: SelectProps) {
   return (
     <div
-      className={`w-full max-w-sm bg-orange-300${
+      className={`w-full bg-orange-300${
         darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-      } ${visibility === "invisible" ? "invisible" : "block"} ${className}`}
+      } ${className}`}
     >
       <Select value={value} onValueChange={onChange} disabled={disabled}>
         <SelectTrigger className="min-w-[200px]">
@@ -135,7 +133,7 @@ export function SelectInput({
         </SelectContent>
       </Select>
       {helperText && (
-        <Label className="mt-2 text-xs text-red-600 dark:text-red-400">
+        <Label className="text-xs text-red-600 dark:text-red-400">
           {helperText}
         </Label>
       )}

@@ -6,6 +6,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import sessionStorage from "redux-persist/lib/storage/session";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { PersistConfig } from "redux-persist/lib/types";
+import { registerUsersApi } from "@/api/services/registerUsersApi";
 
 // Configuración de persistencia con cifrado
 // const persistConfig = {
@@ -32,7 +33,8 @@ const persistConfig: PersistConfig<RootState> = {
 const appReducer = combineReducers(
   {
     auth: authReducer,
-    [loginApi.reducerPath]: loginApi.reducer, // Añades el reducer del api aquí
+    [loginApi.reducerPath]: loginApi.reducer,
+    [registerUsersApi.reducerPath]: registerUsersApi.reducer,
   }
   // {}
 );
